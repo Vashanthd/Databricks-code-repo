@@ -4,12 +4,18 @@
 
 # COMMAND ----------
 
+dbutils.widgets.removeAll()
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ######Below dbutils is the comprehensive one, out of which we are going to concentrate currently on notebook, widgets and fs for now
 
 # COMMAND ----------
 
 dbutils.help()
+#important utils are
+#fs, jobs, notebook, widgets
 
 # COMMAND ----------
 
@@ -73,6 +79,11 @@ dbutils.widgets.help()
 
 # COMMAND ----------
 
+#Creating textbox Widgets
+dbutils.widgets.text("Tablename","cities","Enter the table name to Query")
+
+# COMMAND ----------
+
 print("can you create a textbox widget")
 dbutils.widgets.text("tablename","cities","enter the tablename to query")
 
@@ -84,6 +95,7 @@ print("user passed the value of ?",tblname)
 
 # COMMAND ----------
 
+#Implemented dynamic SQL usecase in Databricks
 display(spark.sql(f"select * from default.{tblname} limit 10"))
 
 # COMMAND ----------
@@ -92,7 +104,41 @@ dbutils.widgets.removeAll()
 
 # COMMAND ----------
 
-dbutils.widgets.text("team_name","Enter team name","This is to represent our team name")
+dbutils.widgets.help()
+
+# COMMAND ----------
+
+dbutils.widgets.dropdown("dropdown_widget","Vashanth",["Vashanth","Balaji","Arun","Karthick"],"Select your name")
+aspirant_name_chosen=dbutils.widgets.get("dropdown_widget")
+print("Good morning",aspirant_name_chosen)
+
+# COMMAND ----------
+
+dbutils.widgets.multiselect("multiselect_widget","wd36",["wd32","we43","we45","wd36"],"Select your team name you belongs to")
+all_batches=dbutils.widgets.get("multiselect_widget")
+print(all_batches)
+all_batches_lst=all_batches.split(",")
+for i in all_batches_lst:
+    print(f"hello team {i}")
+#print("You have chosen the team name as",all_batches)
+
+# COMMAND ----------
+
+#Interview question- how to access some value from the given string
+fullname="mohamed kader irfan"
+fname=fullname.split(" ")[0]
+lname=fullname.split(" ")[-1]
+print(fname, 'and', lname)
+
+# COMMAND ----------
+
+dbutils.widgets.combobox("combobox_widget","wd36",["wd32","we43","we45","wd36"],"Select your team name")
+combobox_value=dbutils.widgets.get("combobox_widget")
+print("Good morning",combobox_value)
+
+# COMMAND ----------
+
+dbutils.widgets.text("team_name","WD36","This is to represent our team name")
 
 # COMMAND ----------
 
@@ -120,6 +166,10 @@ print(dict_all_widgets)
 
 # COMMAND ----------
 
+dbutils.widgets.removeAll()
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #####4. Calling a child notebook (example_child_notebook.ipynb) from this parent notebook with parameters
 # MAGIC dbutils.widgets.text("param1", "default_value", "Your input parameter")
@@ -128,7 +178,38 @@ print(dict_all_widgets)
 
 # COMMAND ----------
 
-child_return_value=dbutils.notebook.run("/Workspace/Users/infoblisstech@gmail.com/databricks-code-repo/databricks_workouts_2025/1_DATABRICKS_NOTEBOOK_FUNDAMENTALS/4_child_notebook", 180,{"table_name":"cities1"})
+child_return_value=dbutils.notebook.run("/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook", 180,{"table_name":"workspace.default.mobile_os_usage"})
+
+# COMMAND ----------
+
+try:
+    if True:
+        result = dbutils.notebook.run(
+            "/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook",
+            600
+        )
+    else:
+        result = dbutils.notebook.run(
+            "/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook",
+            300
+        )
+    print("Notebook run result:", result)
+except Exception as e:
+    print("Notebook execution failed:", e)
+
+# COMMAND ----------
+
+if True:
+    dbutils.notebook.run("/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook",600)
+else:
+    dbutils.notebook.run("/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook",300)
+
+# COMMAND ----------
+
+import time
+for i in range(13):
+    dbutils.notebook.run("/Workspace/Users/vashanth.d@gmail.com/Databricks-code-repo/4_child_notebook",300)
+    time.sleep(10)
 
 # COMMAND ----------
 
