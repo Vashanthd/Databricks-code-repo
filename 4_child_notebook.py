@@ -13,7 +13,7 @@
 
 # COMMAND ----------
 
-dbutils.widgets.text("table_name", "cust")
+dbutils.widgets.text("table_name", "cities")
 
 # COMMAND ----------
 
